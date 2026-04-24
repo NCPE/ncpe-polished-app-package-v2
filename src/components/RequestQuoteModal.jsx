@@ -1,15 +1,28 @@
+import { useEffect, useState } from 'react'
+
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xrerjavr'
+
 export default function RequestQuoteModal({ open, item, onClose }) {
-  const [form, setForm] = useState({
+  const blankForm = {
     name: '',
     company: '',
     email: '',
     phone: '',
     qty: '1',
     notes: '',
-  })
+  }
 
+  const [form, setForm] = useState(blankForm)
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (open && item) {
+      setForm(blankForm)
+      setStatus('')
+      setLoading(false)
+    }
+  }, [open, item?.id])
 
   if (!open || !item) return null
 
@@ -20,6 +33,13 @@ export default function RequestQuoteModal({ open, item, onClose }) {
       ...form,
       [e.target.name]: e.target.value,
     })
+  }
+
+  function handleClose() {
+    setForm(blankForm)
+    setStatus('')
+    setLoading(false)
+    onClose()
   }
 
   async function handleSubmit(e) {
@@ -59,14 +79,7 @@ export default function RequestQuoteModal({ open, item, onClose }) {
 
     if (res.ok) {
       setStatus('Quote request sent successfully.')
-      setForm({
-        name: '',
-        company: '',
-        email: '',
-        phone: '',
-        qty: '1',
-        notes: '',
-      })
+      setForm(blankForm)
     } else {
       setStatus('Error sending quote request. Please try again.')
     }
@@ -135,7 +148,7 @@ export default function RequestQuoteModal({ open, item, onClose }) {
               {loading ? 'Sending...' : 'Submit Request'}
             </button>
 
-            <button type="button" onClick={onClose}>
+            <button type="button" onClick={handleClose}>
               Cancel
             </button>
           </div>
