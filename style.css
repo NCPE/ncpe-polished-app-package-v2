@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NCPE Pump Crossover Finder</title>
+  <meta name="description" content="Search competitor pump models and request a Barmesa equivalent from North Coast Process Equipment." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <p class="eyebrow">North Coast Process Equipment</p>
+      <h1>Pump Crossover Finder</h1>
+      <p class="subhead">
+        Search by competitor brand, model, application, HP, discharge size, flow, or head.
+        Results are recommended equivalents for review.
+      </p>
+    </section>
+
+    <section class="search-panel">
+      <label for="searchInput">Search competitor model or pump details</label>
+      <div class="search-row">
+        <input id="searchInput" type="search" placeholder="Example: Flygt NP3102, Tsurumi 100B4222, ABS XFP, 6 inch sewage" autocomplete="off" />
+        <button id="clearBtn" type="button">Clear</button>
+      </div>
+
+      <div class="filters">
+        <select id="brandFilter">
+          <option value="">All Brands</option>
+        </select>
+        <select id="typeFilter">
+          <option value="">All Pump Types</option>
+        </select>
+        <select id="confidenceFilter">
+          <option value="">All Confidence Levels</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+
+      <p id="resultCount" class="result-count"></p>
+    </section>
+
+    <section id="results" class="results"></section>
+
+    <section id="quotePanel" class="quote-panel hidden" aria-live="polite">
+      <button id="closeQuote" class="close-btn" type="button">×</button>
+      <h2>Request Quote / Verification</h2>
+      <p class="small">
+        This sends the selected model information to NCPE for review. Final pump selection must verify flow,
+        head, voltage, phase, discharge size, solids handling, material, hazardous-location rating, and application requirements.
+      </p>
+
+      <form id="quoteForm" action="https://formspree.io/f/xrerjavr" method="POST">
+        <input type="hidden" name="selected_crossover" id="selectedCrossover" />
+        <input type="hidden" name="barmesa_model" id="selectedBarmesa" />
+        <input type="hidden" name="competitor_model" id="selectedCompetitor" />
+
+        <div class="form-grid">
+          <label>Your Name
+            <input name="name" required />
+          </label>
+          <label>Email
+            <input name="email" type="email" required />
+          </label>
+          <label>Phone
+            <input name="phone" />
+          </label>
+          <label>Company
+            <input name="company" />
+          </label>
+        </div>
+
+        <label>Application / Notes
+          <textarea name="message" rows="5" placeholder="Add flow, head, voltage, phase, photos, or site conditions."></textarea>
+        </label>
+
+        <button id="submitQuote" class="primary-btn" type="submit">Send Quote Request</button>
+        <p id="formStatus" class="form-status"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
